@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reciclaje ESRN34</title>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2d8a4e;
+    --verde-claro: #4caf72;
+    --verde-lima: #8bc34a;
+    --amarillo: #f9c22e;
+    --azul: #2196f3;
+    --tierra: #795548;
+    --fondo: #0d1f0f;
+    --fondo2: #122b15;
+    --texto: #e8f5e9;
+    --card: rgba(255,255,255,0.06);
+    --border: rgba(139,195,74,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── FONDO ANIMADO ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(45,138,78,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(76,175,114,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(139,195,74,0.06) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+    animation: bgPulse 8s ease-in-out infinite alternate;
+  }
+  @keyframes bgPulse {
+    from { opacity: 0.6; } to { opacity: 1; }
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 40px 20px 20px;
+  }
+  .logo-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a5e2a, #2d8a4e);
+    border: 2px solid var(--verde-lima);
+    border-radius: 16px;
+    padding: 8px 20px;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--verde-lima);
+    margin-bottom: 14px;
+    box-shadow: 0 0 20px rgba(139,195,74,0.3);
+  }
+  h1 {
+    font-family: 'Righteous', cursive;
+    font-size: clamp(2.8rem, 8vw, 5.5rem);
+    line-height: 1;
+    background: linear-gradient(135deg, #8bc34a 0%, #4caf72 40%, #f9c22e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 4px 24px rgba(139,195,74,0.4));
+    margin-bottom: 8px;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+  }
+  @keyframes titleGlow {
+    from { filter: drop-shadow(0 4px 24px rgba(139,195,74,0.3)); }
+    to   { filter: drop-shadow(0 4px 40px rgba(139,195,74,0.7)); }
+  }
+  .subtitle {
+    font-size: 1rem; color: #81c784; letter-spacing: 1px;
+    font-weight: 600; margin-bottom: 4px;
+  }
+  .location {
+    font-size: 0.8rem; color: #558b5e; letter-spacing: 2px;
+  }
+
+  /* ── HOJA DECO ── */
+  .leaf { position: fixed; pointer-events:none; font-size:1.8rem; opacity:0.12; animation: floatLeaf linear infinite; z-index:0; }
+  @keyframes floatLeaf {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity:0; }
+    10%  { opacity:0.12; }
+    90%  { opacity:0.12; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity:0; }
+  }
+
+  /* ── GRID DE BOTONES ── */
+  .btn-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    max-width: 1100px;
+    margin: 36px auto;
+    padding: 0 20px;
+  }
+
+  .btn-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 22px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    backdrop-filter: blur(10px);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    text-align: center;
+  }
+  .btn-card::before {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(135deg, transparent 60%, rgba(255,255,255,0.04));
+    pointer-events:none;
+  }
+  .btn-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--verde-lima);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 24px rgba(139,195,74,0.2);
+  }
+  .btn-card:active { transform: scale(0.97); }
+  .btn-icon { font-size: 2.6rem; line-height: 1; }
+  .btn-label {
+    font-family: 'Righteous', cursive;
+    font-size: 1.1rem;
+    color: var(--verde-lima);
+    letter-spacing: 0.5px;
+  }
+  .btn-desc { font-size: 0.8rem; color: #81c784; }
+
+  .btn-card[data-color="green"]  { --accent: #4caf72; }
+  .btn-card[data-color="blue"]   { --accent: #42a5f5; }
+  .btn-card[data-color="yellow"] { --accent: #f9c22e; }
+  .btn-card[data-color="teal"]   { --accent: #26c6da; }
+  .btn-card[data-color="purple"] { --accent: #ab47bc; }
+  .btn-card[data-color="orange"] { --accent: #ff7043; }
+  .btn-card:hover .btn-label { color: var(--accent, var(--verde-lima)); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,10,2,0.88);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: linear-gradient(135deg, #122b15, #1a3d1f);
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    max-width: 720px; width: 100%;
+    max-height: 88vh; overflow-y: auto;
+    padding: 36px 32px;
+    position: relative;
+    transform: scale(0.92) translateY(20px);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 20px;
+    background: rgba(255,255,255,0.08); border: none;
+    color: #ccc; font-size: 1.4rem; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,80,80,0.25); color: #ff6b6b; }
+
+  .modal h2 {
+    font-family: 'Righteous', cursive;
+    font-size: 1.8rem;
+    color: var(--verde-lima);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  /* ── 3R ── */
+  .tres-r { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 8px; }
+  .r-card {
+    border-radius: 16px; padding: 22px 16px; text-align: center;
+    border: 1.5px solid; transition: transform 0.3s;
+  }
+  .r-card:hover { transform: translateY(-4px); }
+  .r-card.reducir  { background: rgba(76,175,114,0.1); border-color: #4caf72; }
+  .r-card.reutilizar { background: rgba(66,165,245,0.1); border-color: #42a5f5; }
+  .r-card.reciclar { background: rgba(249,194,46,0.1); border-color: #f9c22e; }
+  .r-card h3 { font-family:'Righteous',cursive; font-size:1.4rem; margin: 8px 0; }
+  .r-card.reducir h3   { color: #4caf72; }
+  .r-card.reutilizar h3 { color: #42a5f5; }
+  .r-card.reciclar h3  { color: #f9c22e; }
+  .r-card p { font-size: 0.88rem; color: #b2dfb8; line-height: 1.6; }
+  .r-icon { font-size: 2.4rem; }
+
+  /* ── VIDEOS ── */
+  .video-grid { display: grid; gap: 16px; margin-top: 8px; }
+  .video-item {
+    background: rgba(0,0,0,0.3); border-radius: 14px; overflow: hidden;
+    border: 1px solid rgba(139,195,74,0.15);
+  }
+  .video-item iframe { width: 100%; aspect-ratio: 16/9; display: block; border: none; }
+  .video-label { padding: 10px 14px; font-size: 0.85rem; color: #81c784; font-weight: 700; }
+
+  /* ── DATOS ── */
+  .datos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 8px; }
+  .dato-card {
+    background: rgba(0,0,0,0.25); border-radius: 14px; padding: 18px 14px; text-align: center;
+    border: 1px solid rgba(139,195,74,0.2);
+    transition: transform 0.3s;
+  }
+  .dato-card:hover { transform: translateY(-3px); }
+  .dato-num { font-family: 'Righteous', cursive; font-size: 2rem; color: var(--amarillo); }
+  .dato-txt { font-size: 0.82rem; color: #a5d6a7; margin-top: 4px; line-height: 1.5; }
+
+  /* ── OBJETIVOS ── */
+  .obj-list { list-style: none; margin-top: 8px; display: grid; gap: 10px; }
+  .obj-list li {
+    background: rgba(0,0,0,0.2); border-radius: 12px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid rgba(139,195,74,0.15);
+    font-size: 0.9rem; color: #c8e6c9;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .obj-list li:hover { border-color: var(--verde-lima); background: rgba(139,195,74,0.08); }
+  .obj-list li.done { opacity: 0.55; text-decoration: line-through; }
+  .obj-check { font-size: 1.3rem; flex-shrink: 0; }
+  .obj-pts { margin-left: auto; font-family:'Righteous',cursive; color: var(--amarillo); font-size: 0.85rem; }
+
+  /* ── ENCUESTA ── */
+  .survey { display: grid; gap: 22px; margin-top: 8px; }
+  .q-block { background: rgba(0,0,0,0.2); border-radius: 14px; padding: 18px; border: 1px solid rgba(139,195,74,0.15); }
+  .q-text { font-weight: 700; color: #c8e6c9; margin-bottom: 12px; font-size: 0.95rem; }
+  .q-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .q-opt {
+    background: rgba(255,255,255,0.06); border: 1.5px solid rgba(139,195,74,0.25);
+    border-radius: 8px; padding: 8px 16px; cursor: pointer;
+    font-size: 0.85rem; color: #b2dfb8; transition: all 0.2s;
+  }
+  .q-opt:hover { border-color: var(--verde-lima); background: rgba(139,195,74,0.12); }
+  .q-opt.selected { background: rgba(139,195,74,0.2); border-color: var(--verde-lima); color: #fff; }
+  .survey-submit {
+    background: linear-gradient(135deg, var(--verde), var(--verde-claro));
+    color: #fff; border: none; border-radius: 12px; padding: 14px 28px;
+    font-family: 'Righteous', cursive; font-size: 1rem; cursor: pointer;
+    transition: all 0.25s; margin-top: 8px; width: 100%;
+  }
+  .survey-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,138,78,0.4); }
+  .survey-result { text-align: center; padding: 20px; font-size: 1.1rem; color: var(--verde-lima); font-weight: 700; display: none; }
+  .survey-result.show { display: block; }
+
+  /* ── MINIJUEGO ── */
+  #game-modal .modal { max-width: 900px; padding: 24px; }
+  .game-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
+  .game-score { font-family:'Righteous',cursive; font-size:1.4rem; color:var(--amarillo); }
+  .game-timer { font-family:'Righteous',cursive; font-size:1.2rem; color:#ef5350; }
+  .game-lives { font-size:1.2rem; }
+
+  #game-canvas-wrap {
+    position: relative;
+    background: linear-gradient(180deg, #1a3a1a 0%, #0d1f0d 100%);
+    border-radius: 16px; overflow: hidden;
+    border: 2px solid rgba(139,195,74,0.3);
+    user-select: none;
+  }
+  #gameCanvas { display: block; width: 100%; touch-action: none; }
+
+  .game-instructions {
+    font-size: 0.82rem; color: #81c784; text-align: center;
+    margin-top: 10px; line-height: 1.6;
+  }
+
+  .game-overlay {
+    position: absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:16px;
+    background: rgba(0,10,2,0.85); border-radius:14px;
+    z-index:20;
+  }
+  .game-overlay h3 { font-family:'Righteous',cursive; font-size:2rem; color:var(--verde-lima); }
+  .game-overlay p  { color:#b2dfb8; font-size:0.95rem; text-align:center; max-width:360px; }
+  .start-btn {
+    background: linear-gradient(135deg,var(--verde),var(--verde-claro));
+    color:#fff; border:none; border-radius:12px; padding:14px 32px;
+    font-family:'Righteous',cursive; font-size:1.1rem; cursor:pointer;
+    transition:all 0.25s;
+  }
+  .start-btn:hover { transform:scale(1.05); box-shadow:0 8px 28px rgba(45,138,78,0.5); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0d1f0f; }
+  ::-webkit-scrollbar-thumb { background: #2d8a4e; border-radius: 3px; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index:10;
+    text-align: center; padding: 24px;
+    color: #388e3c; font-size: 0.78rem;
+    border-top: 1px solid rgba(139,195,74,0.1);
+    margin-top: 20px;
+  }
+  footer span { color: var(--verde-lima); }
+
+  .tag { display:inline-block; background:rgba(139,195,74,0.12); border:1px solid rgba(139,195,74,0.3); border-radius:20px; padding:3px 10px; font-size:0.72rem; color:#81c784; margin:3px 2px; }
+
+  @media(max-width:480px){
+    .modal { padding:24px 18px; }
+    .btn-grid { grid-template-columns:1fr 1fr; gap:12px; }
+    .btn-card { padding:18px 14px; }
+    .btn-icon { font-size:2rem; }
+    .btn-label { font-size:0.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hojas flotantes -->
+<script>
+  ['🍃','🌿','♻️','🌱'].forEach((e,i)=>{
+    for(let j=0;j<3;j++){
+      const d=document.createElement('div');
+      d.className='leaf'; d.textContent=e;
+      d.style.left=Math.random()*100+'vw';
+      d.style.animationDuration=(12+Math.random()*18)+'s';
+      d.style.animationDelay=(-Math.random()*20)+'s';
+      d.style.fontSize=(1.2+Math.random()*1.4)+'rem';
+      document.body.appendChild(d);
+    }
+  });
+</script>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-badge">🌿 Escuela ESRN N°34 · Río Negro · Argentina</div>
+  <h1>Reciclaje ESRN34</h1>
+  <p class="subtitle">Cuidemos el planeta juntos</p>
+  <p class="location">♻️ Reducir · Reutilizar · Reciclar</p>
+</header>
+
+<!-- BOTONES PRINCIPALES -->
+<div class="btn-grid">
+
+  <div class="btn-card" data-color="green" onclick="openModal('modal-3r')">
+    <span class="btn-icon">♻️</span>
+    <span class="btn-label">Resumen de las 3R</span>
+    <span class="btn-desc">Reducir, Reutilizar y Reciclar</span>
+  </div>
+
+  <div class="btn-card" data-color="blue" onclick="openModal('modal-videos')">
+    <span class="btn-icon">🎬</span>
+    <span class="btn-label">¿Cómo reciclar?</span>
+    <span class="btn-desc">Videos educativos en español</span>
+  </div>
+
+  <div class="btn-card" data-color="yellow" onclick="openModal('modal-datos')">
+    <span class="btn-icon">📊</span>
+    <span class="btn-label">Datos informativos</span>
+    <span class="btn-desc">Contaminación y beneficios</span>
+  </div>
+
+  <div class="btn-card" data-color="teal" onclick="openModal('modal-objetivos')">
+    <span class="btn-icon">🎯</span>
+    <span class="btn-label">Objetivos</span>
+    <span class="btn-desc">Desafíos de reciclaje</span>
+  </div>
+
+  <div class="btn-card" data-color="purple" onclick="openModal('modal-encuesta')">
+    <span class="btn-icon">📝</span>
+    <span class="btn-label">Encuesta</span>
+    <span class="btn-desc">¿Cuánto sabés de reciclaje?</span>
+  </div>
+
+  <div class="btn-card" data-color="orange" onclick="openModal('game-modal')">
+    <span class="btn-icon">🎮</span>
+    <span class="btn-label">Minijuego</span>
+    <span class="btn-desc">¡Separá los residuos!</span>
+  </div>
+
+</div>
+
+<!-- ═══════════════ MODAL 3R ═══════════════ -->
+<div class="modal-overlay" id="modal-3r">
+<div class="modal">
+  <button class="modal-close" onclick="closeModal('modal-3r')">✕</button>
+  <h2>♻️ Las 3R del Reciclaje</h2>
+  <p style="color:#81c784;font-size:0.9rem;margin-bottom:20px;line-height:1.7;">
+    Las <strong style="color:#c8e6c9;">3R</strong> son los tres principios fundamentales para reducir el impacto ambiental de los residuos. Si todos las aplicamos en nuestra vida diaria, podemos hacer una gran diferencia para el planeta.
+  </p>
+  <div class="tres-r">
+    <div class="r-card reducir">
+      <div class="r-icon">📉</div>
+      <h3>Reducir</h3>
+      <p>Disminuir la cantidad de residuos que generamos. Comprá solo lo necesario, preferí envases reutilizables y evitá el plástico de un solo uso. ¡Es la R más importante!</p>
+    </div>
+    <div class="r-card reutilizar">
+      <div class="r-icon">🔄</div>
+      <h3>Reutilizar</h3>
+      <p>Darle una segunda vida a objetos antes de tirarlos. Una botella puede ser un macetero, una lata puede ser un portalápices. ¡La creatividad no tiene límites!</p>
+    </div>
+    <div class="r-card reciclar">
+      <div class="r-icon">♻️</div>
+      <h3>Reciclar</h3>
+      <p>Transformar los residuos en nuevos materiales. El papel, el vidrio, el plástico y los metales pueden convertirse en nuevos productos, ahorrando energía y recursos.</p>
+    </div>
+  </div>
+  <div style="margin-top:20px;background:rgba(0,0,0,0.2);border-radius:14px;padding:16px;border:1px solid rgba(139,195,74,0.2);">
+    <p style="font-size:0.88rem;color:#a5d6a7;line-height:1.7;">
+      🌍 <strong style="color:#c8e6c9;">¿Sabías que?</strong> Si cada argentino redujera 1 kg de basura por semana, evitaríamos más de <strong style="color:#f9c22e;">2 millones de toneladas</strong> de residuos al año. En Río Negro, la correcta separación de residuos permite que más del <strong style="color:#f9c22e;">60%</strong> de los materiales sean aprovechados en lugar de terminar en basurales.
+    </p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════ MODAL VIDEOS ═══════════════ -->
+<div class="modal-overlay" id="modal-videos">
+<div class="modal">
+  <button class="modal-close" onclick="closeModal('modal-videos')">✕</button>
+  <h2>🎬 ¿Cómo reciclar?</h2>
+  <p style="color:#81c784;font-size:0.9rem;margin-bottom:18px;">Videos educativos para aprender a reciclar correctamente:</p>
+  <div class="video-grid">
+    <div class="video-item">
+      <iframe src="https://www.youtube.com/embed/iqSF3AP_6AE" title="Cómo reciclar en casa" allowfullscreen></iframe>
+      <div class="video-label">🏠 Cómo reciclar en casa paso a paso</div>
+    </div>
+    <div class="video-item">
+      <iframe src="https://www.youtube.com/embed/Vkz2jFKNDGI" title="Separar residuos" allowfullscreen></iframe>
+      <div class="video-label">🗑️ Cómo separar residuos correctamente</div>
+    </div>
+    <div class="video-item">
+      <iframe src="https://www.youtube.com/embed/J5M5MSpDtlI" title="Reciclaje para niños" allowfullscreen></iframe>
+      <div class="video-label">👧 El reciclaje explicado para todos</div>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-size:0.82rem;color:#558b5e;text-align:center;">
+    💡 Tip: Buscá en YouTube "reciclaje Argentina" para encontrar más videos locales
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════ MODAL DATOS ═══════════════ -->
+<div class="modal-overlay" id="modal-datos">
+<div class="modal">
+  <button class="modal-close" onclick="closeModal('modal-datos')">✕</button>
+  <h2>📊 Datos Informativos</h2>
+  <p style="color:#81c784;font-size:0.9rem;margin-bottom:18px;">Datos alarmantes sobre la contaminación y los beneficios del reciclaje:</p>
+
+  <div class="datos-grid">
+    <div class="dato-card">
+      <div class="dato-num">450</div>
+      <div class="dato-txt">⏳ Años que tarda el plástico en degradarse en la naturaleza</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">8M</div>
+      <div class="dato-txt">🌊 Toneladas de plástico que llegan al océano cada año en el mundo</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">17</div>
+      <div class="dato-txt">🌳 Árboles que se salvan por cada tonelada de papel reciclado</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">74%</div>
+      <div class="dato-txt">⚡ Energía que se ahorra reciclando aluminio vs producirlo nuevo</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">1M</div>
+      <div class="dato-txt">🐦 Aves marinas que mueren por año por culpa del plástico</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">44M</div>
+      <div class="dato-txt">🗑️ Toneladas de residuos generadas por año en Argentina</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">30%</div>
+      <div class="dato-txt">♻️ De los residuos argentinos podrían reciclarse pero van a basurales</div>
+    </div>
+    <div class="dato-card">
+      <div class="dato-num">1000</div>
+      <div class="dato-txt">📅 Años que tarda una bolsa de plástico en descomponerse</div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px;background:rgba(76,175,114,0.08);border-radius:14px;padding:16px;border:1px solid rgba(76,175,114,0.3);">
+    <p style="font-size:0.9rem;color:#c8e6c9;font-weight:700;margin-bottom:8px;">🌱 Beneficios del reciclaje en Río Negro:</p>
+    <p style="font-size:0.85rem;color:#81c784;line-height:1.8;">
+      ✅ Reduce la contaminación del Río Negro y sus afluentes<br>
+      ✅ Genera empleos en la industria del reciclaje<br>
+      ✅ Disminuye la presión sobre los basurales locales<br>
+      ✅ Protege la fauna patagónica única de la región<br>
+      ✅ Ahorra energía y recursos naturales provinciales
+    </p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════ MODAL OBJETIVOS ═══════════════ -->
+<div class="modal-overlay" id="modal-objetivos">
+<div class="modal">
+  <button class="modal-close" onclick="closeModal('modal-objetivos')">✕</button>
+  <h2>🎯 Objetivos de Reciclaje</h2>
+  <p style="color:#81c784;font-size:0.9rem;margin-bottom:6px;">¡Hacé clic en los objetivos que ya cumpliste para marcarlos! 🏆</p>
+  <p style="color:#558b5e;font-size:0.8rem;margin-bottom:16px;">Puntos acumulados: <span id="pts-total" style="color:#f9c22e;font-family:'Righteous',cursive;">0</span> pts</p>
+
+  <ul class="obj-list" id="obj-list">
+    <li onclick="toggleObj(this)"><span class="obj-check">🍶</span> Reutilizá una botella de plástico como macetero o portalápices <span class="obj-pts">+10 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">📰</span> Juntá papel y cartón de tu casa para llevar al punto verde <span class="obj-pts">+15 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🛍️</span> Usá una bolsa reutilizable en tu próxima compra del súper <span class="obj-pts">+10 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🥤</span> No usés un solo vaso descartable durante una semana entera <span class="obj-pts">+20 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🔋</span> Descartá pilas y baterías en un punto de recolección especial <span class="obj-pts">+25 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🌿</span> Convencé a un familiar para que empiece a separar residuos <span class="obj-pts">+30 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🍎</span> Creá un compost casero con restos de frutas y verduras <span class="obj-pts">+35 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">💧</span> Reducí el uso de agua durante el baño en 2 minutos por día <span class="obj-pts">+15 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">📱</span> Donó un dispositivo electrónico viejo en lugar de tirarlo <span class="obj-pts">+40 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🎒</span> Llevá lonchera reutilizable al colegio durante toda la semana <span class="obj-pts">+20 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🖊️</span> Usá las dos caras del papel antes de descartarlo <span class="obj-pts">+5 pts</span></li>
+    <li onclick="toggleObj(this)"><span class="obj-check">🌍</span> Enseñale a un compañero/a cómo separar los residuos <span class="obj-pts">+25 pts</span></li>
+  </ul>
+</div>
+</div>
+
+<!-- ═══════════════ MODAL ENCUESTA ═══════════════ -->
+<div class="modal-overlay" id="modal-encuesta">
+<div class="modal">
+  <button class="modal-close" onclick="closeModal('modal-encuesta')">✕</button>
+  <h2>📝 Encuesta de Reciclaje</h2>
+  <p style="color:#81c784;font-size:0.9rem;margin-bottom:18px;">Respondé estas preguntas para saber cuánto sabés sobre reciclaje:</p>
+
+  <div class="survey" id="survey-form">
+    <div class="q-block">
+      <div class="q-text">1. ¿Con qué frecuencia separás los residuos en tu casa?</div>
+      <div class="q-opts">
+        <span class="q-opt" onclick="selectOpt(this,'q1')">Siempre ♻️</span>
+        <span class="q-opt" onclick="selectOpt(this,'q1')">A veces 🤔</span>
+        <span class="q-opt" onclick="selectOpt(this,'q1')">Casi nunca 😬</span>
+        <span class="q-opt" onclick="selectOpt(this,'q1')">Nunca 😶</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-text">2. ¿Sabés qué residuos van en el contenedor azul?</div>
+      <div class="q-opts">
+        <span class="q-opt" onclick="selectOpt(this,'q2')">Sí, lo sé bien ✅</span>
+        <span class="q-opt" onclick="selectOpt(this,'q2')">Lo sé a medias 🤷</span>
+        <span class="q-opt" onclick="selectOpt(this,'q2')">No lo sé ❌</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-text">3. ¿Hay contenedores de reciclaje cerca de tu casa o escuela?</div>
+      <div class="q-opts">
+        <span class="q-opt" onclick="selectOpt(this,'q3')">Sí, varios 🗑️</span>
+        <span class="q-opt" onclick="selectOpt(this,'q3')">Solo algunos 📍</span>
+        <span class="q-opt" onclick="selectOpt(this,'q3')">No hay ninguno 🚫</span>
+        <span class="q-opt" onclick="selectOpt(this,'q3')">No sé 🤔</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-text">4. ¿Usás bolsas reutilizables cuando vas al supermercado?</div>
+      <div class="q-opts">
+        <span class="q-opt" onclick="selectOpt(this,'q4')">Siempre 🛍️</span>
+        <span class="q-opt" onclick="selectOpt(this,'q4')">A veces</span>
+        <span class="q-opt" onclick="selectOpt(this,'q4')">Nunca</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-text">5. ¿Cuánto creés que tardará una botella de plástico en descomponerse?</div>
+      <div class="q-opts">
+        <span class="q-opt" onclick="selectOpt(this,'q5')">10 años</span>
+        <span class="q-opt" onclick="selectOpt(this,'q5')">50 años</span>
+        <span class="q-opt" onclick="selectOpt(this,'q5')">200 años</span>
+        <span class="q-opt" onclick="selectOpt(this,'q5')">+400 años 😱</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-text">6. ¿Aprendiste algo nuevo sobre reciclaje en esta app?</div>
+      <div class="q-opts">
+        <span class="q-opt" onclick="selectOpt(this,'q6')">¡Sí, mucho! 🤩</span>
+        <span class="q-opt" onclick="selectOpt(this,'q6')">Algo nuevo 😊</span>
+        <span class="q-opt" onclick="selectOpt(this,'q6')">Ya lo sabía todo 🧠</span>
+      </div>
+    </div>
+
+    <button class="survey-submit" onclick="submitSurvey()">Enviar respuestas 🌱</button>
+  </div>
+
+  <div class="survey-result" id="survey-result">
+    <div style="font-size:3rem;margin-bottom:12px;">🌟</div>
+    <div id="survey-msg"></div>
+    <p style="color:#81c784;font-size:0.85rem;margin-top:12px;font-weight:normal;">¡Gracias por participar! Compartí esta app con tus compañeros 🌍</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════ MODAL MINIJUEGO ═══════════════ -->
+<div class="modal-overlay" id="game-modal">
+<div class="modal" style="max-width:860px;">
+  <button class="modal-close" onclick="closeModal('game-modal');stopGame()">✕</button>
+  <h2>🎮 Minijuego: ¡Separar los residuos!</h2>
+
+  <div class="game-header">
+    <div class="game-score">⭐ Puntos: <span id="g-score">0</span></div>
+    <div class="game-lives" id="g-lives">❤️❤️❤️</div>
+    <div class="game-timer">⏱️ <span id="g-timer">60</span>s</div>
+  </div>
+
+  <div id="game-canvas-wrap">
+    <canvas id="gameCanvas" width="820" height="440"></canvas>
+    <div class="game-overlay" id="game-overlay">
+      <h3>🗑️ ¡Separar residuos!</h3>
+      <p>Arrastrá cada objeto al contenedor correcto.<br>
+      <strong style="color:#f9c22e;">Azul</strong>: Papel/Cartón · <strong style="color:#f9c22e;">Amarillo</strong>: Plástico/Metal · <strong style="color:#f9c22e;">Verde</strong>: Vidrio</p>
+      <button class="start-btn" onclick="startGame()">▶ ¡Empezar!</button>
+    </div>
+  </div>
+  <p class="game-instructions">🖱️ Hacé <strong>clic y arrastrá</strong> los residuos al contenedor correcto · 📱 En celular: tocá y deslizá</p>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  Hecho con 💚 por <span>ESRN N°34</span> · Río Negro, Argentina · <span>♻️ Juntos por un planeta más verde</span>
+</footer>
+
+<script>
+// ─── MODAL HELPERS ───
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{ if(e.target===o){ o.classList.remove('open'); document.body.style.overflow=''; if(o.id==='game-modal') stopGame(); } });
+});
+
+// ─── OBJETIVOS ───
+let totalPts=0;
+function toggleObj(li){
+  const pts=parseInt(li.querySelector('.obj-pts').textContent);
+  if(li.classList.toggle('done')){
+    totalPts+=pts;
+    li.querySelector('.obj-check').textContent='✅';
+  } else {
+    totalPts-=pts;
+    const icons=['🍶','📰','🛍️','🥤','🔋','🌿','🍎','💧','📱','🎒','🖊️','🌍'];
+    const idx=[...document.getElementById('obj-list').children].indexOf(li);
+    li.querySelector('.obj-check').textContent=icons[idx];
+  }
+  document.getElementById('pts-total').textContent=totalPts;
+}
+
+// ─── ENCUESTA ───
+const surveyAnswers={};
+function selectOpt(el,q){
+  el.closest('.q-opts').querySelectorAll('.q-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  surveyAnswers[q]=el.textContent;
+}
+function submitSurvey(){
+  const answered=Object.keys(surveyAnswers).length;
+  document.getElementById('survey-form').style.display='none';
+  const res=document.getElementById('survey-result');
+  res.classList.add('show');
+  let msg='';
+  if(answered<3) msg='¡Gracias por responder! <br>Te invitamos a explorar más la app para aprender sobre reciclaje. 🌱';
+  else if(surveyAnswers.q1==='Siempre ♻️' && surveyAnswers.q4==='Siempre 🛍️') msg='¡Sos un/a verdadero/a campeón/a del reciclaje! 🏆<br>Seguí así e inspirá a los demás.';
+  else msg='¡Muy bien! Cada pequeño paso cuenta. <br>Seguí aprendiendo y mejorando tus hábitos de reciclaje. 💪🌍';
+  document.getElementById('survey-msg').innerHTML=msg;
+}
+
+// ══════════════════════════════════════════
+// ─── MINIJUEGO ───
+// ══════════════════════════════════════════
+const canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d');
+
+const BINS=[
+  { x:60,  color:'#1565c0', label:'PAPEL', icon:'📄', accepts:['paper'], gradient:['#1565c0','#1976d2'] },
+  { x:230, color:'#f9a825', label:'PLÁSTICO', icon:'🧴', accepts:['plastic'], gradient:['#f57f17','#f9a825'] },
+  { x:400, color:'#2e7d32', label:'VIDRIO',  icon:'🍾', accepts:['glass'],   gradient:['#1b5e20','#2e7d32'] },
+  { x:570, color:'#6a1b9a', label:'ORGÁNICO',icon:'🍎', accepts:['organic'], gradient:['#4a148c','#6a1b9a'] },
+  { x:720, color:'#b71c1c', label:'RESIDUO', icon:'🚯', accepts:['other'],   gradient:['#7f0000','#b71c1c'] },
+];
+const BW=80, BH=100, BY=320;
+
+const ITEMS_POOL=[
+  { label:'Diario',  icon:'📰', type:'paper',   color:'#fff9c4' },
+  { label:'Cartón',  icon:'📦', type:'paper',   color:'#d7a060' },
+  { label:'Hoja',    icon:'📄', type:'paper',   color:'#e8f5e9' },
+  { label:'Botella', icon:'🧴', type:'plastic',  color:'#b3e5fc' },
+  { label:'Bolsa',   icon:'🛍️', type:'plastic',  color:'#e1f5fe' },
+  { label:'Lata',    icon:'🥫', type:'plastic',  color:'#c8e6c9' },
+  { label:'Tarro',   icon:'🍶', type:'glass',   color:'#a5d6a7' },
+  { label:'Botella 🍾', icon:'🍾', type:'glass', color:'#c8e6c9' },
+  { label:'Vaso',    icon:'🥛', type:'glass',   color:'#e3f2fd' },
+  { label:'Cáscara', icon:'🍌', type:'organic', color:'#fff9c4' },
+  { label:'Manzana', icon:'🍎', type:'organic', color:'#ffcdd2' },
+  { label:'Yerba',   icon:'🌿', type:'organic', color:'#c8e6c9' },
+  { label:'Pila',    icon:'🔋', type:'other',   color:'#f5f5f5' },
+  { label:'Paño',    icon:'🧻', type:'other',   color:'#fce4ec' },
+  { label:'Foco',    icon:'💡', type:'other',   color:'#fffde7' },
+];
+
+let items=[], dragging=null, dragOffX=0, dragOffY=0;
+let score=0, lives=3, timeLeft=60, timerInterval=null;
+let gameRunning=false;
+let animFrame=null;
+let spawnInterval=null;
+
+function resizeCanvas(){
+  const wrap=document.getElementById('game-canvas-wrap');
+  const w=wrap.clientWidth;
+  canvas.style.width=w+'px';
+  canvas.style.height=(w*(440/820))+'px';
+}
+
+function getScale(){
+  return canvas.clientWidth / canvas.width;
+}
+
+function startGame(){
+  document.getElementById('game-overlay').style.display='none';
+  score=0; lives=3; timeLeft=60; items=[];
+  gameRunning=true;
+  updateHUD();
+  spawnItem(); spawnItem();
+  spawnInterval=setInterval(spawnItem, 2200);
+  timerInterval=setInterval(tick,1000);
+  loop();
+}
+
+function stopGame(){
+  gameRunning=false;
+  clearInterval(timerInterval);
+  clearInterval(spawnInterval);
+  cancelAnimationFrame(animFrame);
+}
+
+function tick(){
+  if(!gameRunning) return;
+  timeLeft--;
+  document.getElementById('g-timer').textContent=timeLeft;
+  if(timeLeft<=0) endGame();
+}
+
+function endGame(){
+  stopGame();
+  const ov=document.getElementById('game-overlay');
+  ov.style.display='flex';
+  ov.innerHTML=`
+    <h3>${score>=50?'🏆 ¡Excelente!':'🌱 ¡Buen intento!'}</h3>
+    <p>Obtuviste <strong style="color:#f9c22e;font-size:1.4rem;">${score}</strong> puntos<br>${score>=50?'¡Sos un experto en reciclaje!':'¡Seguí practicando, cada punto suma al planeta!'}</p>
+    <button class="start-btn" onclick="startGame()">🔄 Jugar de nuevo</button>
+  `;
+}
+
+function spawnItem(){
+  if(!gameRunning) return;
+  const pool=ITEMS_POOL;
+  const t=pool[Math.floor(Math.random()*pool.length)];
+  items.push({
+    ...t,
+    x: 80+Math.random()*(canvas.width-160),
+    y: 80+Math.random()*160,
+    r: 32,
+    vx:(Math.random()-0.5)*0.4,
+    vy:(Math.random()-0.5)*0.4,
+    id: Math.random()
+  });
+}
+
+function updateHUD(){
+  document.getElementById('g-score').textContent=score;
+  document.getElementById('g-lives').textContent='❤️'.repeat(Math.max(0,lives));
+}
+
+function loop(){
+  if(!gameRunning) return;
+  draw();
+  animFrame=requestAnimationFrame(loop);
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Fondo
+  const bg=ctx.createLinearGradient(0,0,0,canvas.height);
+  bg.addColorStop(0,'#1a3a1a'); bg.addColorStop(1,'#0d1f0d');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Suelo
+  ctx.fillStyle='#1b3a1b';
+  ctx.fillRect(0,canvas.height-30,canvas.width,30);
+
+  // Contenedores
+  BINS.forEach(b=>{
+    const bx=b.x, by=BY;
+    const g=ctx.createLinearGradient(bx,by,bx+BW,by+BH);
+    g.addColorStop(0,b.gradient[0]); g.addColorStop(1,b.gradient[1]);
+    ctx.fillStyle=g;
+    ctx.beginPath();
+    ctx.roundRect(bx,by,BW,BH,10);
+    ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.2)';
+    ctx.lineWidth=2; ctx.stroke();
+
+    // Boca del contenedor
+    ctx.fillStyle='rgba(0,0,0,0.35)';
+    ctx.beginPath();
+    ctx.roundRect(bx+6,by+6,BW-12,24,6);
+    ctx.fill();
+
+    // Símbolo ♻️ en contenedor
+    ctx.font='22px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(b.icon, bx+BW/2, by+50);
+    ctx.font='bold 9px Nunito'; ctx.fillStyle='rgba(255,255,255,0.9)';
+    ctx.fillText(b.label, bx+BW/2, by+BH-10);
+  });
+
+  // Objetos
+  items.forEach(it=>{
+    if(it===dragging) return;
+    // Pequeño bob
+    it.x+=it.vx; it.y+=it.vy;
+    if(it.x<it.r||it.x>canvas.width-it.r) it.vx*=-1;
+    if(it.y<it.r||it.y>BY-it.r-10) it.vy*=-1;
+
+    drawItem(it);
+  });
+
+  if(dragging) drawItem(dragging);
+}
+
+function drawItem(it){
+  // Sombra
+  ctx.save();
+  ctx.shadowColor='rgba(0,0,0,0.6)';
+  ctx.shadowBlur=12; ctx.shadowOffsetY=4;
+  ctx.fillStyle=it.color;
+  ctx.beginPath();
+  ctx.arc(it.x,it.y,it.r,0,Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  // Borde
+  ctx.strokeStyle='rgba(255,255,255,0.25)';
+  ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(it.x,it.y,it.r,0,Math.PI*2); ctx.stroke();
+
+  // Ícono
+  ctx.font=`${it.r*1.1}px sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(it.icon,it.x,it.y+1);
+
+  // Etiqueta
+  ctx.font='bold 10px Nunito'; ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.textBaseline='alphabetic';
+  ctx.fillText(it.label,it.x,it.y+it.r+14);
+}
+
+function getPos(e){
+  const scale=getScale();
+  const rect=canvas.getBoundingClientRect();
+  let cx,cy;
+  if(e.touches){ cx=e.touches[0].clientX; cy=e.touches[0].clientY; }
+  else { cx=e.clientX; cy=e.clientY; }
+  return { x:(cx-rect.left)/scale, y:(cy-rect.top)/scale };
+}
+
+canvas.addEventListener('mousedown', onDown);
+canvas.addEventListener('touchstart', onDown, {passive:false});
+function onDown(e){
+  if(!gameRunning) return;
+  e.preventDefault();
+  const {x,y}=getPos(e);
+  for(let i=items.length-1;i>=0;i--){
+    const it=items[i];
+    if(Math.hypot(x-it.x,y-it.y)<it.r+8){
+      dragging=it; dragOffX=x-it.x; dragOffY=y-it.y;
+      items.splice(i,1); items.push(it);
+      break;
+    }
+  }
+}
+canvas.addEventListener('mousemove', onMove);
+canvas.addEventListener('touchmove', onMove, {passive:false});
+function onMove(e){
+  if(!dragging) return;
+  e.preventDefault();
+  const {x,y}=getPos(e);
+  dragging.x=x-dragOffX; dragging.y=y-dragOffY;
+}
+canvas.addEventListener('mouseup', onUp);
+canvas.addEventListener('touchend', onUp);
+function onUp(e){
+  if(!dragging) return;
+  // Comprobar si cayó en un contenedor
+  let hit=false;
+  BINS.forEach(b=>{
+    if(dragging.x>b.x-10 && dragging.x<b.x+BW+10 && dragging.y>BY-30 && dragging.y<BY+BH){
+      // ¿Correcto?
+      if(b.accepts.includes(dragging.type)){
+        score+=10; hit=true;
+        showFeedback(b.x+BW/2, BY-20, '✅ +10', '#4caf72');
+        const idx=items.indexOf(dragging);
+        if(idx>-1) items.splice(idx,1);
+        spawnItem();
+      } else {
+        lives--; hit=true;
+        showFeedback(b.x+BW/2, BY-20, '❌ -1 ❤️', '#ef5350');
+        dragging.x=80+Math.random()*(canvas.width-160);
+        dragging.y=100+Math.random()*100;
+        dragging.vx=(Math.random()-0.5)*0.4;
+        dragging.vy=(Math.random()-0.5)*0.4;
+        if(lives<=0) endGame();
+      }
+      updateHUD();
+    }
+  });
+  if(!hit && items.indexOf(dragging)===-1) items.push(dragging);
+  dragging=null;
+}
+
+const feedbacks=[];
+function showFeedback(x,y,msg,color){
+  feedbacks.push({x,y,msg,color,alpha:1,vy:-1.5});
+  if(feedbacks.length===1) drawFeedbacks();
+}
+function drawFeedbacks(){
+  if(feedbacks.length===0) return;
+  feedbacks.forEach((f,i)=>{
+    f.y+=f.vy; f.alpha-=0.025;
+    ctx.save(); ctx.globalAlpha=Math.max(0,f.alpha);
+    ctx.font='bold 18px Righteous,sans-serif'; ctx.textAlign='center';
+    ctx.fillStyle=f.color; ctx.fillText(f.msg,f.x,f.y);
+    ctx.restore();
+  });
+  for(let i=feedbacks.length-1;i>=0;i--){ if(feedbacks[i].alpha<=0) feedbacks.splice(i,1); }
+  if(feedbacks.length>0) requestAnimationFrame(drawFeedbacks);
+}
+
+// Responsive canvas
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+</script>
+</body>
+</html>
+
